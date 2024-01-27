@@ -9,8 +9,8 @@ sealed class SignupState extends Equatable {
 
 final class SignUpInitial extends SignupState {}
 
-class CreatingUserState extends SignupState {
-  const CreatingUserState();
+class UserCreatingState extends SignupState {
+  const UserCreatingState();
 }
 
 class UserCreatedState extends SignupState {
@@ -18,10 +18,10 @@ class UserCreatedState extends SignupState {
 }
 
 class SignUpErrorState extends SignupState {
-  const SignUpErrorState(this.message);
+  const SignUpErrorState(this.errorMessage);
 
-  final String message;
+  final String errorMessage;
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [errorMessage];
 }

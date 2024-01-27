@@ -19,7 +19,7 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
     SignUpButtonEvent event,
     Emitter<SignupState> emit,
   ) async {
-    emit(const CreatingUserState());
+    emit(const UserCreatingState());
 
     final result = await _createUserAccountUseCase.execute(
       bio: event.bio,

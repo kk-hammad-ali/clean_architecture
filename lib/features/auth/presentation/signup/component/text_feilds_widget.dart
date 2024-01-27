@@ -1,9 +1,11 @@
 import 'package:clean_architecture/core/utils/colors.dart';
 import 'package:clean_architecture/core/utils/dimension.dart';
+import 'package:clean_architecture/features/auth/presentation/signup/bloc/signup_bloc.dart';
 import 'package:clean_architecture/features/auth/presentation/widgets/custom_long_button_widget.dart';
 import 'package:clean_architecture/features/auth/presentation/widgets/custom_password_textfields_widget.dart';
 import 'package:clean_architecture/features/auth/presentation/widgets/custom_textfields_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TextFeildsWidgetSignUp extends StatefulWidget {
   const TextFeildsWidgetSignUp({
@@ -158,21 +160,51 @@ class _TextFeildsWidgetSignUpState extends State<TextFeildsWidgetSignUp> {
             isVisiable: true,
           ),
           SizedBox(height: dimensions.getScreenHeight * 0.03),
+          BlocBuilder<SignupBloc, SignupState>(
+            builder: (context, state) {
+              if (state is SignUpErrorState) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.errorMessage),
+                    ),
+                  );
+                });
+                return Container();
+              } else if (state is UserCreatingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is UserCreatedState) {
+                return const Center(
+                  child: Text('Done'),
+                );
+              } else {
+                // Show your default UI here
+                return CustomLongButtonWidget(
+                  backgroundColor: AppColors.primaryColor,
+                  textColor: AppColors.whiteColor,
+                  text: 'SignUp',
+                  onPressed: () {
+                    context.read<SignupBloc>().add(
+                          SignUpButtonEvent(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                            age: 12,
+                            bio: _bioController.text,
+                            name: _nameController.text,
+                          ),
+                        );
+                  },
+                );
+              }
+            },
+          ),
           CustomLongButtonWidget(
             backgroundColor: AppColors.primaryColor,
             textColor: AppColors.whiteColor,
             text: 'SignUp',
-            onPressed: () {
-              // context.read<AuthBloc>().add(
-              //       CreateAccountEvent(
-              //         email: _emailController.text,
-              //         password: _passwordController.text,
-              //         age: 12,
-              //         bio: _bioController.text,
-              //         name: _nameController.text,
-              //       ),
-              //     );
-            },
+            onPressed: () {},
           ),
         ],
       ),
