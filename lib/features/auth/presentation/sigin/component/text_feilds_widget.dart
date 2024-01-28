@@ -73,7 +73,8 @@ class _TextFeildsWidgetSignInState extends State<TextFeildsWidgetSignIn> {
               if (value!.isEmpty) {
                 return 'Password is required.';
               }
-              const passwordPattern = r'^(?=.*?[A-Z])(?=.*?[!@#$&*])(?=.*?[0-9]).{8,}$';
+              const passwordPattern =
+                  r'^(?=.*?[A-Z])(?=.*?[!@#$&*])(?=.*?[0-9]).{8,}$';
               final regExp = RegExp(passwordPattern);
               if (!regExp.hasMatch(value)) {
                 return 'Password must contain at least 8 characters including uppercase letters, numbers, and special characters.';
@@ -84,7 +85,6 @@ class _TextFeildsWidgetSignInState extends State<TextFeildsWidgetSignIn> {
           ),
           SizedBox(height: dimensions.getScreenHeight * 0.03),
           BlocBuilder<SigninBloc, SigninState>(
-            // bloc: SigninBloc(loginUserUseCase: loginUserUseCase),
             builder: (context, state) {
               if (state is SignInErrorState) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -94,39 +94,37 @@ class _TextFeildsWidgetSignInState extends State<TextFeildsWidgetSignIn> {
                     ),
                   );
                 });
-                return Container();
               } else if (state is SignInLoadingState) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                    ],
+                  ),
                 );
               } else if (state is SignInLoadedState) {
-                return const Center(
-                  child: Text('Done'),
-                );
-              } else {
-                // Show your default UI here
-                return CustomLongButtonWidget(
-                  backgroundColor: AppColors.primaryColor,
-                  textColor: AppColors.whiteColor,
-                  text: 'SignIn',
-                  onPressed: () {
-                    //you should call the event here
-                    BlocProvider.of<SigninBloc>(context).add(SignInButtonEvent(
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                    ));
-
-                    //why you are using providr to do this?
-                    // context.read<SigninBloc>().add(
-                    //       SignInButtonEvent(
-                    //         email: _emailController.text,
-                    //         password: _passwordController.text,
-                    //       ),
-                    //     );
-                    //
-                  },
-                );
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('User logged in successfully'),
+                    ),
+                  );
+                });
               }
+
+              // Always return the button
+              return CustomLongButtonWidget(
+                backgroundColor: AppColors.primaryColor,
+                textColor: AppColors.whiteColor,
+                text: 'SignIn',
+                onPressed: () {
+                  BlocProvider.of<SigninBloc>(context).add(SignInButtonEvent(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                  ));
+                },
+              );
             },
           ),
         ],
