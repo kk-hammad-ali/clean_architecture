@@ -1,6 +1,5 @@
 import 'package:clean_architecture/core/utils/colors.dart';
 import 'package:clean_architecture/core/utils/dimension.dart';
-import 'package:clean_architecture/dependency_injection.dart';
 import 'package:clean_architecture/features/auth/presentation/sigin/bloc/signin_bloc.dart';
 import 'package:clean_architecture/features/auth/presentation/widgets/custom_long_button_widget.dart';
 import 'package:clean_architecture/features/auth/presentation/widgets/custom_password_textfields_widget.dart';
@@ -74,8 +73,7 @@ class _TextFeildsWidgetSignInState extends State<TextFeildsWidgetSignIn> {
               if (value!.isEmpty) {
                 return 'Password is required.';
               }
-              const passwordPattern =
-                  r'^(?=.*?[A-Z])(?=.*?[!@#$&*])(?=.*?[0-9]).{8,}$';
+              const passwordPattern = r'^(?=.*?[A-Z])(?=.*?[!@#$&*])(?=.*?[0-9]).{8,}$';
               final regExp = RegExp(passwordPattern);
               if (!regExp.hasMatch(value)) {
                 return 'Password must contain at least 8 characters including uppercase letters, numbers, and special characters.';
@@ -86,7 +84,7 @@ class _TextFeildsWidgetSignInState extends State<TextFeildsWidgetSignIn> {
           ),
           SizedBox(height: dimensions.getScreenHeight * 0.03),
           BlocBuilder<SigninBloc, SigninState>(
-            bloc: SigninBloc(loginUserUseCase: loginUserUseCase),
+            // bloc: SigninBloc(loginUserUseCase: loginUserUseCase),
             builder: (context, state) {
               if (state is SignInErrorState) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -97,11 +95,11 @@ class _TextFeildsWidgetSignInState extends State<TextFeildsWidgetSignIn> {
                   );
                 });
                 return Container();
-              } else if (state is LoggingUserState) {
+              } else if (state is SignInLoadingState) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              } else if (state is UserLoggedInState) {
+              } else if (state is SignInLoadedState) {
                 return const Center(
                   child: Text('Done'),
                 );
@@ -112,12 +110,20 @@ class _TextFeildsWidgetSignInState extends State<TextFeildsWidgetSignIn> {
                   textColor: AppColors.whiteColor,
                   text: 'SignIn',
                   onPressed: () {
-                    context.read<SigninBloc>().add(
-                          SignInButtonEvent(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          ),
-                        );
+                    //you should call the event here
+                    BlocProvider.of<SigninBloc>(context).add(SignInButtonEvent(
+                      email: _emailController.text,
+                      password: _passwordController.text,
+                    ));
+
+                    //why you are using providr to do this?
+                    // context.read<SigninBloc>().add(
+                    //       SignInButtonEvent(
+                    //         email: _emailController.text,
+                    //         password: _passwordController.text,
+                    //       ),
+                    //     );
+                    //
                   },
                 );
               }

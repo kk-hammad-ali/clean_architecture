@@ -1,6 +1,6 @@
 part of 'signin_bloc.dart';
 
-sealed class SigninEvent extends Equatable {
+abstract class SigninEvent extends Equatable {
   const SigninEvent();
 
   @override

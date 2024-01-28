@@ -9,12 +9,12 @@ sealed class SigninState extends Equatable {
 
 final class SignInInitial extends SigninState {}
 
-class LoggingUserState extends SigninState {
-  const LoggingUserState();
+class SignInLoadedState extends SigninState {
+  const SignInLoadedState();
 }
 
-class UserLoggedInState extends SigninState {
-  const UserLoggedInState();
+class SignInLoadingState extends SigninState {
+  const SignInLoadingState();
 }
 
 class SignInErrorState extends SigninState {
