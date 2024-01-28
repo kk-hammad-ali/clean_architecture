@@ -36,10 +36,14 @@ class _TextFeildsWidgetSignUpState extends State<TextFeildsWidgetSignUp> {
 
   void validateForm() {
     if (_formKey.currentState!.validate()) {
-      // TODO: IMPLENT THE VALIDATE LOGIC
-    } else {
-      // TODO: IMPLENT THE INVALIDATE LOGIC
-    }
+      BlocProvider.of<SignupBloc>(context).add(SignUpButtonEvent(
+        bio: _bioController.text,
+        age: int.parse(_ageController.text),
+        name: _nameController.text,
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      ));
+    } else {}
   }
 
   @override
@@ -65,7 +69,6 @@ class _TextFeildsWidgetSignUpState extends State<TextFeildsWidgetSignUp> {
               if (value!.isEmpty) {
                 return 'Name is required.';
               }
-              // Additional validation rules can be added here if needed
               return null;
             },
           ),
@@ -86,7 +89,6 @@ class _TextFeildsWidgetSignUpState extends State<TextFeildsWidgetSignUp> {
               if (value!.isEmpty) {
                 return 'Bio is required.';
               }
-              // Additional validation rules can be added here if needed
               return null;
             },
           ),
@@ -111,7 +113,6 @@ class _TextFeildsWidgetSignUpState extends State<TextFeildsWidgetSignUp> {
               if (age == null || age <= 0) {
                 return 'Please enter a valid age.';
               }
-              // Additional validation rules can be added here if needed
               return null;
             },
           ),
@@ -128,8 +129,7 @@ class _TextFeildsWidgetSignUpState extends State<TextFeildsWidgetSignUp> {
               if (value!.isEmpty) {
                 return 'Email is required.';
               }
-              final regExp = RegExp(
-                  r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'); // Regular expression for email validation
+              final regExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
               if (!regExp.hasMatch(value)) {
                 return 'Please enter a valid email address.';
               }
@@ -188,20 +188,12 @@ class _TextFeildsWidgetSignUpState extends State<TextFeildsWidgetSignUp> {
                   );
                 });
               }
-
-              // Always return the button
               return CustomLongButtonWidget(
                 backgroundColor: AppColors.primaryColor,
                 textColor: AppColors.whiteColor,
                 text: 'SignUp',
                 onPressed: () {
-                  BlocProvider.of<SignupBloc>(context).add(SignUpButtonEvent(
-                    bio: _bioController.text,
-                    age: int.parse(_ageController.text),
-                    name: _nameController.text,
-                    email: _emailController.text.trim(),
-                    password: _passwordController.text,
-                  ));
+                  validateForm();
                 },
               );
             },

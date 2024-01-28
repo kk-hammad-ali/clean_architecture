@@ -1,10 +1,11 @@
 import 'package:clean_architecture/core/utils/colors.dart';
 import 'package:clean_architecture/core/utils/dimension.dart';
+import 'package:clean_architecture/features/auth/presentation/sigin/bloc/signin_bloc.dart';
 import 'package:clean_architecture/features/auth/presentation/sigin/component/text_feilds_widget.dart';
-import 'package:clean_architecture/features/auth/presentation/signup/signup_screen.dart';
 import 'package:clean_architecture/features/auth/presentation/widgets/custom_lower_column_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BodySignInScreen extends StatelessWidget {
   const BodySignInScreen({super.key});
@@ -41,13 +42,10 @@ class BodySignInScreen extends StatelessWidget {
                   lastText: "Signup",
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
-                      // TODO: IMPLEMENTS HERE
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignUpScreen(),
-                        ),
-                      );
+                      BlocProvider.of<SigninBloc>(context)
+                          .add(NavigateToSignUpScreenEvent(
+                        context: context,
+                      ));
                     },
                 ),
               ),

@@ -41,7 +41,7 @@ class CustomPasswordFeildWidget extends StatelessWidget {
           onEditingComplete: onEditingComplete,
           keyboardType: TextInputType.visiblePassword,
           controller: controller,
-          // obscureText: !isVisible,
+          obscureText: true,
           focusNode: focusNode,
           decoration: InputDecoration(
             counterText: '',

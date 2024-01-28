@@ -1,7 +1,9 @@
+import 'package:clean_architecture/core/utils/routes.dart';
 import 'package:clean_architecture/dependency_injection.dart';
 import 'package:clean_architecture/features/auth/presentation/sigin/bloc/signin_bloc.dart';
 import 'package:clean_architecture/features/auth/presentation/sigin/signin_screen.dart';
 import 'package:clean_architecture/features/auth/presentation/signup/bloc/signup_bloc.dart';
+import 'package:clean_architecture/features/auth/presentation/signup/signup_screen.dart';
 import 'package:clean_architecture/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +33,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         scaffoldMessengerKey: GlobalKey<ScaffoldMessengerState>(),
         title: 'Flutter Demo',
+        routes: {
+          signInRoute: (context) => const SignInScreen(),
+          signUpRoute: (context) => const SignUpScreen(),
+        },
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,

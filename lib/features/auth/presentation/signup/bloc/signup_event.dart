@@ -26,10 +26,10 @@ class SignUpButtonEvent extends SignupEvent {
   List<Object> get props => [email, password, bio, age, name];
 }
 
-class NavigatorToEvent extends SignupEvent {
-  final Widget widget;
+class NavigateToSignInScreenEvent extends SignupEvent {
+  final BuildContext context;
+  const NavigateToSignInScreenEvent({required this.context});
 
-  const NavigatorToEvent({required this.widget});
   @override
-  List<Object> get props => [widget];
+  List<Object> get props => [];
 }

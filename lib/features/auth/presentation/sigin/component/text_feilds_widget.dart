@@ -30,6 +30,10 @@ class _TextFeildsWidgetSignInState extends State<TextFeildsWidgetSignIn> {
 
   void validateForm() {
     if (_formKey.currentState!.validate()) {
+      BlocProvider.of<SigninBloc>(context).add(SignInButtonEvent(
+        email: _emailController.text,
+        password: _passwordController.text,
+      ));
     } else {}
   }
 
@@ -56,8 +60,7 @@ class _TextFeildsWidgetSignInState extends State<TextFeildsWidgetSignIn> {
               if (value!.isEmpty) {
                 return 'Email is required.';
               }
-              final regExp = RegExp(
-                  r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'); // Regular expression for email validation
+              final regExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
               if (!regExp.hasMatch(value)) {
                 return 'Please enter a valid email address.';
               }
@@ -70,15 +73,6 @@ class _TextFeildsWidgetSignInState extends State<TextFeildsWidgetSignIn> {
             textInputAction: TextInputAction.done,
             onEditingComplete: () {},
             validator: (value) {
-              if (value!.isEmpty) {
-                return 'Password is required.';
-              }
-              const passwordPattern =
-                  r'^(?=.*?[A-Z])(?=.*?[!@#$&*])(?=.*?[0-9]).{8,}$';
-              final regExp = RegExp(passwordPattern);
-              if (!regExp.hasMatch(value)) {
-                return 'Password must contain at least 8 characters including uppercase letters, numbers, and special characters.';
-              }
               return null;
             },
             isVisiable: true,
@@ -112,17 +106,12 @@ class _TextFeildsWidgetSignInState extends State<TextFeildsWidgetSignIn> {
                   );
                 });
               }
-
-              // Always return the button
               return CustomLongButtonWidget(
                 backgroundColor: AppColors.primaryColor,
                 textColor: AppColors.whiteColor,
                 text: 'SignIn',
                 onPressed: () {
-                  BlocProvider.of<SigninBloc>(context).add(SignInButtonEvent(
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                  ));
+                  validateForm();
                 },
               );
             },

@@ -19,3 +19,11 @@ class SignInButtonEvent extends SigninEvent {
   @override
   List<Object> get props => [email, password];
 }
+
+class NavigateToSignUpScreenEvent extends SigninEvent {
+  final BuildContext context;
+  const NavigateToSignUpScreenEvent({required this.context});
+
+  @override
+  List<Object> get props => [];
+}
