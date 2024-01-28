@@ -12,28 +12,14 @@ class SigninBloc extends Bloc<SigninEvent, SigninState> {
     required LoginUserUseCase loginUserUseCase,
   })  : _loginUserUseCase = loginUserUseCase,
         super(SignInInitial()) {
-    on<SignInButtonEvent>(_loginUser);
-  }
-
-  Future<void> _loginUser(
-    SignInButtonEvent event,
-    Emitter<SigninState> emit,
-  ) async {
-    print('pre');
-    emit(const LoggingUserState());
-    print('start');
-    final result = await _loginUserUseCase.execute(
-      email: event.email,
-      password: event.password,
-    );
-    print('middle');
-    result.fold(
-      (failure) => emit(
-          SignInErrorState(errorMessage: 'Error: ${failure.failureMessage}')),
-      (_) => emit(
-        const UserLoggedInState(),
-      ),
-    );
-    print('end');
+    //consider this patter to emit states
+    on<SignInButtonEvent>((event, emit) async {
+      emit(const SignInLoadingState());
+      final result = await _loginUserUseCase.execute(email: event.email, password: event.password);
+      result.fold(
+        (l) => emit(SignInErrorState(errorMessage: l.failureMessage)),
+        (r) => emit(const SignInLoadedState()),
+      );
+    });
   }
 }
